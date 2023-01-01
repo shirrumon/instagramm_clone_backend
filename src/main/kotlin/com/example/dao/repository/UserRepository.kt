@@ -10,7 +10,7 @@ import org.mindrot.jbcrypt.BCrypt
 import java.time.LocalDateTime
 
 class UserRepository : DAOFacadeUserInterface {
-    private fun resultRowToArticle(row: ResultRow) = UserModel(
+    private fun resultRowToUserModel(row: ResultRow) = UserModel(
         id = row[UserSchema.id],
         name = row[UserSchema.name],
         email = row[UserSchema.email],
@@ -21,13 +21,13 @@ class UserRepository : DAOFacadeUserInterface {
     )
 
     override suspend fun allUsers(): List<UserModel> = dbQuery {
-        UserSchema.selectAll().map(::resultRowToArticle)
+        UserSchema.selectAll().map(::resultRowToUserModel)
     }
 
     override suspend fun getUserById(id: Int): UserModel? = dbQuery {
         UserSchema
             .select { UserSchema.id eq id }
-            .map(::resultRowToArticle)
+            .map(::resultRowToUserModel)
             .singleOrNull()
     }
 
@@ -40,7 +40,7 @@ class UserRepository : DAOFacadeUserInterface {
             it[UserSchema.createDate] = LocalDateTime.now().toString()
         }
 
-        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToArticle)
+        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToUserModel)
     }
 
     override suspend fun deleteUserById(id: Int): Boolean = dbQuery {

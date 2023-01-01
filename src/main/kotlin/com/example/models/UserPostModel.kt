@@ -9,7 +9,7 @@ data class UserPostModel(
     val body: String?,
     val postImage: String?,
     val likes: Int = 0,
-    val owner: String,
+    val owner: Int,
     val createDate: String
 )
 
