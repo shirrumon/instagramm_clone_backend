@@ -25,4 +25,6 @@ interface DAOFacadeUserInterface {
         id: Int,
         password: String
     ): Boolean
+
+    suspend fun getUserByEmail(email: String): UserModel?
 }

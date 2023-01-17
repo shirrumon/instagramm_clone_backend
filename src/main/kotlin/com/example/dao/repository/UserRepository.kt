@@ -59,4 +59,11 @@ class UserRepository : DAOFacadeUserInterface {
             it[UserSchema.password] = BCrypt.hashpw(password, BCrypt.gensalt())
         } > 0
     }
+
+    override suspend fun getUserByEmail(email: String): UserModel? = dbQuery {
+        UserSchema
+            .select { UserSchema.email eq email }
+            .map(::resultRowToUserModel)
+            .singleOrNull()
+    }
 }
